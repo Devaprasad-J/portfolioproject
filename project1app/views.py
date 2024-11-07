@@ -1,8 +1,10 @@
+from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
+from django.contrib.auth import logout, login
 from .forms import ProfileForm, ProjectForm, ExperienceForm, EducationForm, CertificationForm
 from .models import Project, Experience, Education, Certification
+from django.contrib import messages
 
 
 @login_required
@@ -127,3 +129,14 @@ def delete_profile(request):
         return redirect('login')  # Redirect to home page after deletion
     return render(request, 'profiles/delete_profile.html')
 
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # Log the user in after registration
+            return redirect('profile')  # Redirect to profile or any desired page
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/register.html', {'form': form})

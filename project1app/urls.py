@@ -3,6 +3,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path('register/', views.register, name='register'),
     path('', views.profile_view, name='profile'),  # Ensure there's a home view
     path('profile/', views.profile_view, name='profile'),
     path('portfolio/', views.portfolio_view, name='portfolio'),
